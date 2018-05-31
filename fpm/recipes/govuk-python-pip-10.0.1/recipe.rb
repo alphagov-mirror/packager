@@ -1,7 +1,7 @@
-class GdsLocalPip1001 < FPM::Cookery::Recipe
+class GovukPip1001 < FPM::Cookery::Recipe
 
   homepage 'https://pip.pypa.io/en/stable/'
-  name 'gds-local-pip'
+  name 'govuk-python-pip'
   version '10.0.1'
 
   description 'Pip for self-compiled Python installation to live in /usr/local, necessary due to TLS requirements not fulfilled in 2.7.6 (Trustys own)'
@@ -12,9 +12,9 @@ class GdsLocalPip1001 < FPM::Cookery::Recipe
   maintainer 'GOV.UK <govuk-dev@digital.cabinet-office.gov.uk>'
   license 'MIT'
 
-  build_depends 'gds-local-python','gds-local-setuptools'
+  build_depends 'govuk-python','govuk-python-setuptools'
 
-  depends 'gds-local-python','gds-local-setuptools'
+  depends 'govuk-python','govuk-python-setuptools'
 
   def build
     sh "cd pip-10.0.1 && /usr/local/bin/python setup.py build"

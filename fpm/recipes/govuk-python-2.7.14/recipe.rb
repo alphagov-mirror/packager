@@ -1,7 +1,7 @@
-class GdsLocalPython2714 < FPM::Cookery::Recipe
+class GovukPython2714 < FPM::Cookery::Recipe
 
   homepage 'https://www.python.org/'
-  name 'gds-local-python'
+  name 'govuk-python'
   version '2.7.14'
 
   description 'Self-compiled Python installation to live in /usr/local, necessary due to TLS requirements not fulfilled in 2.7.6 (Trustys own)'
