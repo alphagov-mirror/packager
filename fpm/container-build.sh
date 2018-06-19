@@ -11,16 +11,18 @@ usage() {
   echo "      -d    DISTRO             One of (${supported_distros[*]})"
   echo "      -r    RECIPE             Recipe to build"
   echo "      -x                       Bash \`set -x\` (trace)"
+  echo "      -s                       Debugging shell"
   exit 0
 }
 
-while getopts "d:r:x:ih" opt
+while getopts "d:r:xihs" opt
 do
   case "$opt" in
     d) DISTRO="$OPTARG" ;;
     r) RECIPE="$OPTARG" ;;
     i) in_container=1 ;;
     x) set -x ;;
+    s) debug_shell=1 ;;
     h) usage ;;
     *) usage ;;
   esac
@@ -45,9 +47,18 @@ else
   docker build -f "$dockerfile" --tag "alphagov-packager:${DISTRO}" .
   export DISTRO
   export RECIPE
-  docker run -it \
-    --mount type=bind,source="$(pwd)/recipes",target=/build \
-    --env RECIPE --env DISTRO \
-    "alphagov-packager:${DISTRO}"
+
+  if [[ "$debug_shell" == 1 ]]
+  then
+    docker run -it \
+      --mount type=bind,source="$(pwd)/recipes",target=/build \
+      --env RECIPE --env DISTRO --entrypoint=/bin/bash \
+      "alphagov-packager:${DISTRO}"
+  else
+    docker run -it \
+      --mount type=bind,source="$(pwd)/recipes",target=/build \
+      --env RECIPE --env DISTRO \
+      "alphagov-packager:${DISTRO}"
+  fi
 fi
 
